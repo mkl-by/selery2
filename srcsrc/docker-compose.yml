@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  web: 
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    container_name: django_selery 
+    volumes:
+      - ./srcsrc:/src
+    env_file:
+      - db_keys.txt
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    command: sh -c "python3 manage.py makemigrations&&python3 manage.py migrate&&python3 manage.py runserver 0.0.0.0:8000"
+  
+  db:  
+    image: postgres:latest 
+    container_name: postgres 
+    env_file:
+        - db_keys.txt 
+  
+  adminer: 
+    image: adminer:latest 
+    container_name: adminersel
+    ports:
+      - "8080:8080"
+
+  redis:
+    image: redis:latest
+    container_name: redis_db
+
+  celery: 
+    build:
+      context: .
+      dockerfile: Dockerfile  
+    container_name: djasel
+    volumes:
+      - ./srcsrc:/src
+    env_file:
+      - db_keys.txt
+    depends_on:
+      - redis
+    command: sh -c "celery -A testselery worker -c 5 -l info"
