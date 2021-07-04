@@ -134,5 +134,6 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 # класть задачки в которые необходимо решать ложим в редис
 CELERY_BROKER_URL = 'redis://redis:6379'
 # а результат соответственно ложим ниже
-CELERY_RESULT_BACKEND = 'redis://redis:6379'
+# так как у нас результат сохраняется в базе строчка ниже не нужна
+#CELERY_RESULT_BACKEND = 'redis://redis:6379'
 # в докер-композ.yaml необходимо запустить брокера

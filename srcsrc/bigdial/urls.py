@@ -4,6 +4,6 @@ from . import views
 
 urlpatterns = [
     path('', views.hello),
-
+    path("<int:id>/", views.check),
 
 ]
